@@ -1,4 +1,11 @@
-import type { Watch, Brand, MovementType, CaseMaterial, Crystal, Strap } from "../mock/watches";
+import type {
+  Watch,
+  Brand,
+  MovementType,
+  CaseMaterial,
+  Crystal,
+  Strap,
+} from "../mock/watches";
 import { watches } from "../mock/watches";
 
 // Simulate network latency
@@ -42,7 +49,9 @@ export interface FetchWatchesResponse {
   totalPages: number;
 }
 
-export async function fetchWatches(params: FetchWatchesParams = {}): Promise<FetchWatchesResponse> {
+export async function fetchWatches(
+  params: FetchWatchesParams = {}
+): Promise<FetchWatchesResponse> {
   const {
     page = 1,
     pageSize = 12,
@@ -68,7 +77,9 @@ export async function fetchWatches(params: FetchWatchesParams = {}): Promise<Fet
 
   // Filters
   if (filters.brands && filters.brands.length > 0) {
-    filtered = filtered.filter((watch) => filters.brands!.includes(watch.brand));
+    filtered = filtered.filter((watch) =>
+      filters.brands!.includes(watch.brand)
+    );
   }
 
   if (filters.minPrice !== undefined) {
@@ -80,15 +91,21 @@ export async function fetchWatches(params: FetchWatchesParams = {}): Promise<Fet
   }
 
   if (filters.caseSizeMin !== undefined) {
-    filtered = filtered.filter((watch) => watch.caseSizeMm >= filters.caseSizeMin!);
+    filtered = filtered.filter(
+      (watch) => watch.caseSizeMm >= filters.caseSizeMin!
+    );
   }
 
   if (filters.caseSizeMax !== undefined) {
-    filtered = filtered.filter((watch) => watch.caseSizeMm <= filters.caseSizeMax!);
+    filtered = filtered.filter(
+      (watch) => watch.caseSizeMm <= filters.caseSizeMax!
+    );
   }
 
   if (filters.movementType && filters.movementType.length > 0) {
-    filtered = filtered.filter((watch) => filters.movementType!.includes(watch.movementType));
+    filtered = filtered.filter((watch) =>
+      filters.movementType!.includes(watch.movementType)
+    );
   }
 
   if (filters.waterResistance && filters.waterResistance.length > 0) {
@@ -98,11 +115,15 @@ export async function fetchWatches(params: FetchWatchesParams = {}): Promise<Fet
   }
 
   if (filters.caseMaterial && filters.caseMaterial.length > 0) {
-    filtered = filtered.filter((watch) => filters.caseMaterial!.includes(watch.caseMaterial));
+    filtered = filtered.filter((watch) =>
+      filters.caseMaterial!.includes(watch.caseMaterial)
+    );
   }
 
   if (filters.crystal && filters.crystal.length > 0) {
-    filtered = filtered.filter((watch) => filters.crystal!.includes(watch.crystal));
+    filtered = filtered.filter((watch) =>
+      filters.crystal!.includes(watch.crystal)
+    );
   }
 
   if (filters.strap && filters.strap.length > 0) {
@@ -139,7 +160,10 @@ export async function fetchWatches(params: FetchWatchesParams = {}): Promise<Fet
       filtered.sort((a, b) => b.price - a.price);
       break;
     case "newest":
-      filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      filtered.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
       break;
     case "rating":
       filtered.sort((a, b) => b.rating - a.rating);
@@ -171,47 +195,53 @@ export interface CartMutationParams {
   qty: number;
 }
 
-export async function mutateCartAdd(params: CartMutationParams): Promise<void> {
+export async function mutateCartAdd(
+  _params: CartMutationParams
+): Promise<void> {
   await delay(500 + Math.random() * 700);
-  
+
   if (shouldError(true)) {
     throw new Error("Failed to add item to cart. Please try again.");
   }
-  
+
   // In a real app, this would call the backend
   // For mock, we just simulate success
 }
 
-export async function mutateCartUpdate(params: CartMutationParams): Promise<void> {
+export async function mutateCartUpdate(
+  _params: CartMutationParams
+): Promise<void> {
   await delay(500 + Math.random() * 700);
-  
+
   if (shouldError(true)) {
     throw new Error("Failed to update cart. Please try again.");
   }
 }
 
-export async function mutateCartRemove(params: { id: string }): Promise<void> {
+export async function mutateCartRemove(_params: { id: string }): Promise<void> {
   await delay(500 + Math.random() * 700);
-  
+
   if (shouldError(true)) {
     throw new Error("Failed to remove item from cart. Please try again.");
   }
 }
 
-export async function submitOrder(orderData: {
+export async function submitOrder(_orderData: {
   shipping: Record<string, string>;
   payment: Record<string, string>;
   cart: Array<{ id: string; qty: number }>;
 }): Promise<{ orderId: string; orderNumber: string }> {
   await delay(800 + Math.random() * 700); // 800-1500ms
-  
+
   if (shouldError(true)) {
     throw new Error("Order submission failed. Please try again.");
   }
-  
+
   const orderId = `order-${Date.now()}`;
-  const orderNumber = `HH-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
-  
+  const orderNumber = `HH-${Math.random()
+    .toString(36)
+    .substring(2, 10)
+    .toUpperCase()}`;
+
   return { orderId, orderNumber };
 }
-

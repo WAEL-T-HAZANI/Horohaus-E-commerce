@@ -27,7 +27,7 @@ const paymentSchema = z.object({
     .regex(/^\d{4}\s?\d{4}\s?\d{4}\s?\d{4}$/, "Invalid card number"),
   expiry: z.string().regex(/^\d{2}\/\d{2}$/, "Invalid expiry date (MM/YY)"),
   cvc: z.string().regex(/^\d{3,4}$/, "Invalid CVC"),
-  billingSameAsShipping: z.boolean().default(true),
+  billingSameAsShipping: z.boolean(),
 });
 
 type ShippingFormData = z.infer<typeof shippingSchema>;
@@ -303,9 +303,9 @@ export function Checkout() {
               </form>
             ) : (
               <form
-                onSubmit={paymentForm.handleSubmit(
-                  handlePaymentSubmit as (data: PaymentFormData) => void
-                )}
+                onSubmit={paymentForm.handleSubmit((data) => {
+                  handlePaymentSubmit(data);
+                })}
                 className="space-y-6"
               >
                 {submitError && (

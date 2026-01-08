@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export interface Toast {
   id: string;
@@ -33,4 +33,3 @@ export function Toast({ toast, onClose }: ToastProps) {
     </motion.div>
   );
 }
-

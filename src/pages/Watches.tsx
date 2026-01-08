@@ -151,7 +151,7 @@ export function Watches() {
         filters,
         sort,
       }),
-    keepPreviousData: true,
+    placeholderData: (previousData) => previousData,
   });
 
   const handleFiltersChange = (newFilters: Filters) => {
@@ -279,17 +279,17 @@ export function Watches() {
                   <SkeletonWatchCard key={i} />
                 ))}
               </div>
-            ) : data && data.watches.length > 0 ? (
+            ) : data && "watches" in data && data.watches.length > 0 ? (
               <>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-6">
                   {data.watches.map((watch) => (
                     <WatchCard key={watch.id} watch={watch} />
                   ))}
                 </div>
-                {data.totalPages > 1 && (
+                {"totalPages" in data && data.totalPages > 1 && (
                   <div className="mt-8">
                     <Pagination
-                      currentPage={data.page}
+                      currentPage={"page" in data ? data.page : 1}
                       totalPages={data.totalPages}
                       onPageChange={handlePageChange}
                     />

@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  type ReactNode,
+} from "react";
 import { AnimatePresence } from "framer-motion";
 import { Toast, Toast as ToastComponent } from "./Toast";
 
@@ -23,14 +29,17 @@ interface ToastProviderProps {
 export function ToastProvider({ children }: ToastProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const showToast = useCallback((message: string, type: "success" | "error" | "info" = "info") => {
-    const id = Math.random().toString(36).substring(7);
-    setToasts((prev) => [...prev, { id, message, type }]);
-    
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((toast) => toast.id !== id));
-    }, 3000);
-  }, []);
+  const showToast = useCallback(
+    (message: string, type: "success" | "error" | "info" = "info") => {
+      const id = Math.random().toString(36).substring(7);
+      setToasts((prev) => [...prev, { id, message, type }]);
+
+      setTimeout(() => {
+        setToasts((prev) => prev.filter((toast) => toast.id !== id));
+      }, 3000);
+    },
+    []
+  );
 
   const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
@@ -43,7 +52,10 @@ export function ToastProvider({ children }: ToastProviderProps) {
         <AnimatePresence>
           {toasts.map((toast) => (
             <div key={toast.id} className="pointer-events-auto">
-              <ToastComponent toast={toast} onClose={() => removeToast(toast.id)} />
+              <ToastComponent
+                toast={toast}
+                onClose={() => removeToast(toast.id)}
+              />
             </div>
           ))}
         </AnimatePresence>
@@ -51,4 +63,3 @@ export function ToastProvider({ children }: ToastProviderProps) {
     </ToastContext.Provider>
   );
 }
-

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { X } from "lucide-react";
 import type {
   Brand,
   MovementType,
@@ -81,7 +80,10 @@ export function FiltersSidebar({
   const hasActiveFilters = Object.keys(localFilters).some((key) => {
     const value = localFilters[key as keyof Filters];
     if (Array.isArray(value)) return value.length > 0;
-    return value !== undefined && value !== null && value !== "";
+    if (typeof value === "boolean") return value;
+    if (typeof value === "number") return true;
+    if (typeof value === "string") return value !== "";
+    return value !== undefined && value !== null;
   });
 
   return (
